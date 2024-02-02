@@ -1,26 +1,26 @@
 function prompt_cmd_duration -d 'Display the elapsed time of last command'
-  set -l seconds ''
-  set -l minutes ''
-  set -l hours ''
-  set -l days ''
+  set -l seconds ""
+  set -l minutes ""
+  set -l hours ""
+  set -l days ""
 
   # Only if command duration is set  
   if set -q CMD_DURATION
     set -l cmd_duration (expr $CMD_DURATION / 1000)
     if [ $cmd_duration -gt 0 ]
-      set seconds ' '(expr $cmd_duration \% 86400 \% 3600 \% 60)'s'
+      set seconds " "(expr $cmd_duration \% 86400 \% 3600 \% 60)"s"
       if [ $cmd_duration -ge 60 ]
-        set minutes ' '(expr $cmd_duration \% 86400 \% 3600 / 60)'m'
+        set minutes " "(expr $cmd_duration \% 86400 \% 3600 / 60)"m"
       end
       if [ $cmd_duration -ge 3600 ]
-        set hours ' '(expr $cmd_duration \% 86400 / 3600)'h'
+        set hours " "(expr $cmd_duration \% 86400 / 3600)"h"
       end
       if [ $cmd_duration -ge 86400 ]
-        set days ' '(expr $cmd_duration / 86400)'d'
+        set days " "(expr $cmd_duration / 86400)"d"
       end
 
       set_color -i -d blue
-      printf '⚑%s%s%s%s' $days$hours$minutes$seconds
+      printf "⚑%s%s%s%s" $days$hours$minutes$seconds
       set_color normal
     end
   end
@@ -34,13 +34,13 @@ function prompt_exit_code -d "Display the exit code of last command"
   else
     set_color green
   end
-  printf ' [%d]' $exit_code
+  printf " [%d]" $exit_code
   set_color normal
 end
 
 function prompt_time -d "Display the current time"
   set_color yellow
-  printf ' %s' (date +%H:%M:%S)
+  printf " %s" (date +%H:%M:%S)
   set_color normal
 end
 
