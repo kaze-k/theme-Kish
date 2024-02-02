@@ -38,13 +38,13 @@ function prompt_exit_code -d "Display the exit code of last command"
   set_color normal
 end
 
-function prompt_time -d "define the appearance of the right-side command line prompt"
+function prompt_time -d "Display the current time"
   set_color yellow
   printf ' %s' (date +%H:%M:%S)
   set_color normal
 end
 
-function fish_right_prompt -d "Display the right prompt"
+function fish_right_prompt -d "define the appearance of the right-side command line prompt"
   prompt_cmd_duration
   prompt_exit_code
   prompt_time
