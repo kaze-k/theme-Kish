@@ -53,7 +53,7 @@ function prompt_jobs -d "Display background jobs"
 
   if [ $has_jobs != 0 ]
     set_color -o cyan
-    printf ' [↩]'
+    printf '●'
     set_color normal
   end
 end
@@ -170,7 +170,30 @@ function prompt_git -d "Display git status"
   end
 end
 
+function fish_default_mode_prompt -d "Display vi mode prompt"
+  if set -q __fish_vi_mode
+    switch $fish_bind_mode
+      case insert
+        set_color -o green
+        printf '<I>'
+      case visual
+        set_color -o magenta
+        printf '<V>'
+      case replace-one
+        set_color -o green
+        printf '<R>'
+      case default
+        set_color -o blue
+        printf '<N>'
+    end
+
+    set_color normal
+  end
+end
+
 function fish_prompt -d "define the appearance of the command line prompt"
+  set -g VIRTUAL_ENV_DISABLE_PROMPT true
+
   echo
 
   set_color -o red
@@ -192,6 +215,7 @@ function fish_prompt -d "define the appearance of the command line prompt"
   printf '└─<'
   set_color normal
 
+  fish_default_mode_prompt
   prompt_git
 
   set_color -o red
