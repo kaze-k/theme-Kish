@@ -4,6 +4,11 @@ Added some features based on [Zhishen Wen's simple fun theme](https://github.com
 
 ![Kish](./preview.png)
 
+## Installation
+```sh
+fisher install kaze-k/theme-kish
+```
+
 ## Left prompt
 Virtual environment, proxy, user, host, abbreviated path, jobs and git branch info
 
