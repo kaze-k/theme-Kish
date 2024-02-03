@@ -21,11 +21,11 @@ function _is_git_conflict -d "Check if git repo has conflicts"
 end
 
 function _get_git_staged_count -d "Get number of staged files"
-  echo (command git diff --cached --name-only --diff-filter=ACM | grep -v "$(git ls-files --unmerged)" | wc -l)
+  echo (command git diff --cached --numstat 2> /dev/null | wc -l)
 end
 
 function _get_git_unstaged_count -d "Get number of unstaged files"
-  echo (command git status --porcelain | grep "^ M" | wc -l)
+  echo (command git status --porcelain | grep "^ M" 2> /dev/null | wc -l)
 end
 
 function _get_git_untracked_count -d "Get number of untracked files"
@@ -53,15 +53,15 @@ function prompt_jobs -d "Display background jobs"
 
   if [ "$has_jobs" != 0 ]
     set_color -o cyan
-    printf "[●]"
+    printf "[●] "
     set_color normal
   end
 end
 
 function prompt_virtual_env -d "Display python virtual env"
   if [ (_is_virtual_env) ]
-    set_color -o green
-    printf "(%s)" (_is_virtual_env)
+    set_color -o yellow
+    printf " (%s)" (_is_virtual_env)
     set_color normal
   end
 end
@@ -69,7 +69,7 @@ end
 function prompt_proxy -d "Display proxy"
   if [ (_is_proxy) ]
     set_color -o red
-    printf "─<"
+    printf "─("
     set_color normal
 
     set_color -o magenta
@@ -77,7 +77,7 @@ function prompt_proxy -d "Display proxy"
     set_color normal
 
     set_color -o red
-    printf ">─"
+    printf ")─"
     set_color normal
   end
 end
@@ -183,22 +183,28 @@ function fish_default_mode_prompt -d "Display vi mode prompt"
     return
   end
 
-  printf " "
+  set_color -o red
+  printf "─["
+  set_color normal
 
   switch $fish_bind_mode
     case insert
       set_color -o green
-      printf "(I)"
+      printf "I"
     case visual
       set_color -o magenta
-      printf "(V)"
+      printf "V"
     case replace-one
       set_color -o green
-      printf "(R)"
+      printf "R"
     case default
       set_color -o blue
-      printf "(N)"
+      printf "N"
   end
+
+  set_color -o red
+  printf "]─"
+  set_color normal
 
   set_color normal
 end
@@ -212,16 +218,16 @@ function fish_prompt -d "define the appearance of the command line prompt"
   printf "┌"
   set_color normal
 
+  fish_default_mode_prompt
   prompt_proxy
 
   set_color -o red
   printf "─<"
   set_color normal
 
-  prompt_virtual_env
   prompt_jobs
   prompt_user_hostname_pwd
-  fish_default_mode_prompt
+  prompt_virtual_env
 
   set_color -o red
   printf ">"

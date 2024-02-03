@@ -20,7 +20,7 @@ function prompt_cmd_duration -d 'Display the elapsed time of last command'
       end
 
       set_color -i -d blue
-      printf "⚑%s%s%s%s" $days$hours$minutes$seconds
+      printf " ⚑%s%s%s%s" $days$hours$minutes$seconds
       set_color normal
     end
   end
@@ -34,7 +34,7 @@ function prompt_exit_code -d "Display the exit code of last command"
   else
     set_color green
   end
-  printf " [%d]" $exit_code
+  printf "[%d]" $exit_code
   set_color normal
 end
 
@@ -45,7 +45,7 @@ function prompt_time -d "Display the current time"
 end
 
 function fish_right_prompt -d "define the appearance of the right-side command line prompt"
-  prompt_cmd_duration
   prompt_exit_code
   prompt_time
+  prompt_cmd_duration
 end
