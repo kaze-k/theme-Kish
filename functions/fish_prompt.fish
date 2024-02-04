@@ -1,7 +1,15 @@
 # name: Kish
 
+function _check_git -d "Check if git repo"
+  echo (command git rev-parse --is-inside-work-tree 2> /dev/null)
+end
+
 function _git_branch_name -d "Display git branch name"
   echo (command git symbolic-ref HEAD 2> /dev/null | sed -e "s|^refs/heads/||")
+end
+
+function _git_commit_hash -d "Display git commit hash"
+  echo (command git rev-parse --short HEAD 2> /dev/null)
 end
 
 function _is_git_dirty -d "Check if git repo is dirty"
@@ -21,11 +29,11 @@ function _is_git_conflict -d "Check if git repo has conflicts"
 end
 
 function _get_git_staged_count -d "Get number of staged files"
-  echo (command git diff --cached --numstat 2> /dev/null | wc -l)
+  echo (command git diff --cached --name-status | grep -v 'U' 2> /dev/null | wc -l)
 end
 
 function _get_git_unstaged_count -d "Get number of unstaged files"
-  echo (command git status --porcelain | grep "^ M" 2> /dev/null | wc -l)
+  echo (command git status --porcelain | grep -E "^[^?U][^[:space:]]" 2> /dev/null | wc -l)
 end
 
 function _get_git_untracked_count -d "Get number of untracked files"
@@ -105,22 +113,28 @@ function prompt_user_hostname_pwd -d "Display user, hostname, and current direct
 end
 
 function prompt_git -d "Display git status"
-  if [ (_git_branch_name) ]
+  if [ (_check_git) ]
     set_color yellow
     printf "("
     set_color normal
 
-    if [ (_is_git_dirty) ]
-      set_color -o red
-      printf "%s" (_git_branch_name)
-      set_color normal
+    if [ (_git_branch_name) ]
+      if [ (_is_git_dirty) ]
+        set_color -o red
+        printf "%s" (_git_branch_name)
+        set_color normal
 
-      set_color brblue
-      printf "*"
-      set_color normal
+        set_color brblue
+        printf "*"
+        set_color normal
+      else
+        set_color -o yellow
+        printf "%s" (_git_branch_name)
+        set_color normal
+      end
     else
-      set_color -o yellow
-      printf "%s" (_git_branch_name)
+      set_color -o red
+      printf "%s" (_git_commit_hash)
       set_color normal
     end
 
