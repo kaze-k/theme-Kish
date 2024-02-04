@@ -10,10 +10,10 @@ fisher install kaze-k/theme-kish
 ```
 
 ## Left prompt
-Virtual environment, proxy, user, host, abbreviated path, jobs and git branch info
+vi mode, proxy, jobs, user, host, abbreviated path, Virtual environment and git branch info
 
 ## Right prompt
-Command duration, exit code and time
+Exit code, time and command duration 
 
 ## Acknowledgments
 Thanks to Zish theme's author
