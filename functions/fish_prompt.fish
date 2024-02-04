@@ -200,6 +200,9 @@ function fish_default_mode_prompt -d "Display vi mode prompt"
     case default
       set_color -o blue
       printf "N"
+    case "*"
+      set_color -o red
+      printf "?"
   end
 
   set_color -o red
