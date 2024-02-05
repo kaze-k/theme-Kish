@@ -37,7 +37,7 @@ function _get_git_unstaged_count -d "Get number of unstaged files"
 end
 
 function _get_git_untracked_count -d "Get number of untracked files"
-  echo (command git ls-files --others --exclude-standard 2> /dev/null | wc -l)
+  echo (command git status --porcelain | grep '^??' | wc -l 2> /dev/null | wc -l)
 end
 
 function _get_git_stashed_count -d "Get number of stashed files"
