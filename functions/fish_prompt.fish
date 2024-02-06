@@ -49,7 +49,7 @@ function _get_git_conflict_count -d "Get number of conflicted files"
 end
 
 function _is_proxy -d "Check if proxy is set"
-  echo (command env | grep -E "proxy|PROXY" 2> /dev/null)
+  echo (command env | grep -E "(\b| )((all|http|https|ftp|rsync)_proxy|ALL|HTTP|HTTPS|FTP|RSYNC)_PROXY( |\b)" 2> /dev/null)
 end
 
 function _is_virtual_env -d "Check if python virtual env is set"
